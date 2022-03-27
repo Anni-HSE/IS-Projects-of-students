@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IS_Projects_of_students.Scripts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,8 +16,6 @@ namespace IS_Projects_of_students
     public partial class Login_Form : Form
     {
         private bool isStudent = true;
-        SqlConnection connection = new SqlConnection();
-        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""D:\Projects\IS Projects of students\Database1.mdf"";Integrated Security=True";
         public Login_Form()
         {
             InitializeComponent();
@@ -34,6 +33,7 @@ namespace IS_Projects_of_students
 
         private void inputLogin_TextChanged(object sender, EventArgs e)
         {
+
         }
 
         private void inputLogin_KeyPress(object sender, KeyPressEventArgs e)
@@ -98,42 +98,19 @@ namespace IS_Projects_of_students
             }
             isStudent = !isStudent;
         }
+       
         public void checkLogin()
         {
-            using (connection = new SqlConnection(connectionString))
+            if(QueriesForSQL.CheckLoginAndPassword(inputLogin.Text, inputPassword.Text, isStudent))
             {
-                SqlCommand command;
-                string login = inputLogin.Text;
-                string passworld = inputPassword.Text;
-
-                if (isStudent)
-                {
-                    command = new SqlCommand($"SELECT [Login], [Password] FROM Students WHERE [Login] = {login.ToLower()} AND [Password] = {passworld}");
-                }
-                else
-                {
-                    command = new SqlCommand($"SELECT [Login], [Password] FROM Teachers WHERE [Login] = {login.ToLower()} AND [Password] = {passworld}");
-                }
-
-                try
-                {
-                    SqlDataReader dataReader = command.ExecuteReader();
-                    if (dataReader.HasRows)
-                    {
-                        MainMenu form = new MainMenu();
-                        form.Show();
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Неверный логин или пароль", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Вы авторизовались", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MainMenu form = new MainMenu(isStudent);
+                form.Show();
             }
+            else
+            {
+                MessageBox.Show("Неверный логин или пароль", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }            
         }
 
         private void registration_Click(object sender, EventArgs e)

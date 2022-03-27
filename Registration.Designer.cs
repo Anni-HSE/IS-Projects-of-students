@@ -254,6 +254,9 @@ namespace IS_Projects_of_students
             // inputTypePerson
             // 
             this.inputTypePerson.FormattingEnabled = true;
+            this.inputTypePerson.Items.AddRange(new object[] {
+            "Студент",
+            "Преподаватель"});
             this.inputTypePerson.Location = new System.Drawing.Point(251, 260);
             this.inputTypePerson.Name = "inputTypePerson";
             this.inputTypePerson.Size = new System.Drawing.Size(109, 23);

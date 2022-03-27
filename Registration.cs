@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IS_Projects_of_students.Classes;
+using IS_Projects_of_students.Scripts;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,11 +15,6 @@ namespace IS_Projects_of_students
 {
     public partial class Registration : Form
     {
-        SqlCommand command = new SqlCommand();
-        string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=""D:\\Projects\\IS Projects of students\\Database1.mdf"";Integrated Security=True";
-        int number;
-        List<string> genders = new List<string>();
-
         public Registration()
         {
             InitializeComponent();
@@ -62,26 +59,9 @@ namespace IS_Projects_of_students
 
         private void Registration_Load(object sender, EventArgs e)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                command = new SqlCommand($"SELECT NameGender FROM Genders");
-                try
-                {
-                    SqlDataReader dataReader = command.ExecuteReader();
-                    while (dataReader.Read())
-                    {
-                        genders.Add(dataReader["NameGender"].ToString().Trim());
-                    }
-                    dataReader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                inputGender.Items.AddRange(genders.ToArray());
-            }
+            inputGender.Items.AddRange(QueriesForSQL.GetGenders());
         }
+       
         public void createAccount()
         {
 
@@ -93,29 +73,17 @@ namespace IS_Projects_of_students
             DateTime dob = inputDoB.Value;
             DateTime dor = DateTime.Now;
 
-            string values = $"values (\'{login}\','{password}\','{fio[0]}\','{fio[1]}\','{fio[2]}\',\'{dob}\',\'{dor}\',\'{email}\', {gender})";
+            Person person = new Person(login, password, fio[0], fio[1], fio[2], dob, dor, email, gender);
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            if(QueriesForSQL.CreateAccount(person, inputTypePerson.SelectedItem.ToString()) != -1)
             {
-
-                if (inputTypePerson.SelectedItem as string == "Студент")
-                {
-                    command = new SqlCommand($"INSERT INTO Students ([Login], [Password], [FirstName], [SecondName], [FatherName], [DataOfBirthday], [DataOfRegistration], [Email], [Gender]) " + values);
-                }
-                else
-                {
-                    command = new SqlCommand($"INSERT INTO Teathers ([Login], [Password], [FirstName], [SecondName], [FatherName], [DataOfBirthday], [DataOfRegistration], [Email], [Gender]) " + values);
-                }
-
-                try
-                {
-                    number = command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Аккаунт создан", "Регистрация", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            else
+            {
+                MessageBox.Show("Ошибка. Аккаунт не создан", "Регистрация", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
         }
 
         public bool checkData()
@@ -162,17 +130,7 @@ namespace IS_Projects_of_students
                 return false;
             }
 
-            if (inputTypePerson.SelectedItem.ToString() == "Студент")
-            {
-                command = new SqlCommand($"SELECT [Login] FROM Students WHERE [Login] = {inputLogin.Text.ToLower()}");
-            }
-            else
-            {
-                command = new SqlCommand($"SELECT [Login] FROM Teachers WHERE [Login] = {inputLogin.Text.ToLower()}");
-            }
-
-            SqlDataReader dataReader = command.ExecuteReader();
-            if (dataReader.HasRows)
+            if (QueriesForSQL.CheckLogin(inputLogin.Text, inputTypePerson.SelectedItem.ToString()))
             {
                 MessageBox.Show("Ошибка. Такой логин уже занят.", "Регистрация", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

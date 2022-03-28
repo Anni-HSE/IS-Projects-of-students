@@ -40,10 +40,7 @@ namespace IS_Projects_of_students
 
         private void inputPassword_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if ((e.KeyChar < 33 || e.KeyChar > 126) && e.KeyChar != 8)
-            {
-                e.Handled = true;
-            }
+
         }
 
         public bool checkData()
@@ -106,7 +103,7 @@ namespace IS_Projects_of_students
                 student.SecondName = fio[1];
                 student.Email = inputEmail.Text;
                 student.DataOfBirthday = inputDoB.Value;
-                student.DataOfBirthday = DateTime.Now;
+                student.DataOfRegistration = DateTime.Now;
                 student.Gender = inputGender.SelectedIndex + 1;
                 student.IdGroup = inputGroup.SelectedIndex + 1;
 

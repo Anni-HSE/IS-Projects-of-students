@@ -49,9 +49,6 @@ namespace IS_Projects_of_students
             // inputGroup
             // 
             this.inputGroup.FormattingEnabled = true;
-            this.inputGroup.Items.AddRange(new object[] {
-            "Студент",
-            "Преподаватель"});
             this.inputGroup.Location = new System.Drawing.Point(238, 196);
             this.inputGroup.Name = "inputGroup";
             this.inputGroup.Size = new System.Drawing.Size(109, 23);
@@ -131,7 +128,6 @@ namespace IS_Projects_of_students
             this.inputFIO.Name = "inputFIO";
             this.inputFIO.Size = new System.Drawing.Size(204, 23);
             this.inputFIO.TabIndex = 33;
-            this.inputFIO.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.inputPassword_KeyPress);
             // 
             // label4
             // 

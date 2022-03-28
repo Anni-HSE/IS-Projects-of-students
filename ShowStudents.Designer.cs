@@ -30,7 +30,7 @@ namespace IS_Projects_of_students
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IdStudentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Login = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,7 +49,7 @@ namespace IS_Projects_of_students
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IdColumn,
+            this.IdStudentColumn,
             this.Login,
             this.Email,
             this.FirstName,
@@ -66,11 +66,11 @@ namespace IS_Projects_of_students
             this.dataGridView1.Size = new System.Drawing.Size(1004, 447);
             this.dataGridView1.TabIndex = 0;
             // 
-            // IdColumn
+            // IdStudentColumn
             // 
-            this.IdColumn.HeaderText = "Id";
-            this.IdColumn.Name = "IdColumn";
-            this.IdColumn.ReadOnly = true;
+            this.IdStudentColumn.HeaderText = "Id";
+            this.IdStudentColumn.Name = "IdStudentColumn";
+            this.IdStudentColumn.ReadOnly = true;
             // 
             // Login
             // 
@@ -144,7 +144,7 @@ namespace IS_Projects_of_students
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IdStudentColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Login;
         private System.Windows.Forms.DataGridViewTextBoxColumn Email;
         private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;

@@ -348,7 +348,10 @@ namespace IS_Projects_of_students.Scripts
                         student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
                         student.Email = dataReader["Email"].ToString().Trim();
                         student.Gender = Convert.ToInt32(dataReader["Gender"]);
-                        student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        if(dataReader["Group"] != null)
+                            student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        else
+                            student.IdGroup = 0;
                         students.Add(student);
                     }
                     dataReader.Close();
@@ -370,10 +373,10 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> genders = new List<string>();
 
-                command = new SqlCommand($"SELECT Gender FROM Students WHERE Gender = 1", connection);
+                command = new SqlCommand($"SELECT COUNT(*) FROM Students WHERE Gender = 1", connection);
                 try
                 {
-                    count = command.ExecuteNonQuery();           
+                    count = (int)command.ExecuteScalar();
                 }
                 catch (Exception ex)
                 {
@@ -392,10 +395,10 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> genders = new List<string>();
 
-                command = new SqlCommand($"SELECT Gender FROM Students WHERE Gender = 2", connection);
+                command = new SqlCommand($"SELECT COUNT(*) FROM Students WHERE Gender = 2", connection);
                 try
                 {
-                    count = command.ExecuteNonQuery();
+                    count = (int)command.ExecuteScalar();
                 }
                 catch (Exception ex)
                 {
@@ -414,10 +417,10 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> genders = new List<string>();
 
-                command = new SqlCommand($"SELECT * FROM Stdents", connection);
+                command = new SqlCommand($"SELECT COUNT(*) FROM Students", connection);
                 try
                 {
-                    count = command.ExecuteNonQuery();
+                    count = (int) command.ExecuteScalar();
                 }
                 catch (Exception ex)
                 {
@@ -438,7 +441,7 @@ namespace IS_Projects_of_students.Scripts
                 string sql;
                 string values = $"values (@login, @password, @firstName, @secondName, @fatherName, @dateOfBirthday, @dateOfRegistration, @email, @gender, @group)";
 
-                sql = $"INSERT INTO Students (Login, Password, FirstName, SecondName, FatherName, DataOfBirthday, DataOfRegistration, Email, Gender, Group) " + values;
+                sql = $"INSERT INTO Students (Login, Password, FirstName, SecondName, FatherName, DataOfBirthday, DataOfRegistration, Email, Gender, [Group]) " + values;
 
 
                 command = connection.CreateCommand();
@@ -481,7 +484,7 @@ namespace IS_Projects_of_students.Scripts
                 command.Parameters.Add(gender);
 
                 SqlParameter group = new SqlParameter("@group", System.Data.SqlDbType.Int);
-                group.Value = person.Gender;
+                group.Value = person.IdGroup;
                 command.Parameters.Add(group);
 
                 try
@@ -495,6 +498,147 @@ namespace IS_Projects_of_students.Scripts
 
                 return number;
             }
+        }
+
+        public static object[] GetStudentIds()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> ids = new List<string>();
+
+                command = new SqlCommand($"SELECT IdStudent FROM Students", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        ids.Add(dataReader["IdStudent"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return ids.ToArray();
+            }
+        }
+
+        public static int UpdateStudnent(int id, Student person)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> genders = new List<string>();
+
+                command = new SqlCommand($"UPDATE Students SET Email = @email, Password = @password, Firstname = @firstName, SecondName = @secondName, FatherName = @fatherName, DataofBirthday = @dataOfBirthday, " +
+                    $" Gender = @gender, Group = @group WHERE IdStudent = {id}", connection);
+
+                SqlParameter password = new SqlParameter("@password", System.Data.SqlDbType.NVarChar);
+                password.Value = person.Password;
+                command.Parameters.Add(password);
+
+                SqlParameter firstName = new SqlParameter("@firstName", System.Data.SqlDbType.NVarChar);
+                firstName.Value = person.FirstName;
+                command.Parameters.Add(firstName);
+
+                SqlParameter secondName = new SqlParameter("@secondName", System.Data.SqlDbType.NVarChar);
+                secondName.Value = person.SecondName;
+                command.Parameters.Add(secondName);
+
+                SqlParameter fatherName = new SqlParameter("@fatherName", System.Data.SqlDbType.NVarChar);
+                fatherName.Value = person.FatherName;
+                command.Parameters.Add(fatherName);
+
+                SqlParameter dob = new SqlParameter("@dateOfBirthday", System.Data.SqlDbType.DateTime);
+                dob.Value = person.DataOfBirthday;
+                command.Parameters.Add(dob);
+
+                SqlParameter email = new SqlParameter("@email", System.Data.SqlDbType.NVarChar);
+                email.Value = person.Email;
+                command.Parameters.Add(email);
+
+                SqlParameter gender = new SqlParameter("@gender", System.Data.SqlDbType.Int);
+                gender.Value = person.Gender;
+                command.Parameters.Add(gender);
+
+                SqlParameter group = new SqlParameter("@group", System.Data.SqlDbType.Int);
+                group.Value = person.IdGroup;
+                command.Parameters.Add(group);
+
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static int RemoveStudent(int id)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> genders = new List<string>();
+
+                command = new SqlCommand($"DELETE FROM Students WHERE IDStudent = {id}", connection);
+        
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static Student GetStudent(int id)
+        {
+            Student student = new Student();
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                command = new SqlCommand($"SELECT * FROM Students WHERE IdStudent = {id}", connection);
+
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        student.IdStudent = Convert.ToInt32(dataReader["IdStudent"]);
+                        student.Login = dataReader["Login"].ToString().Trim();
+                        student.Password = dataReader["Password"].ToString().Trim();
+                        student.FirstName = dataReader["FirstName"].ToString().Trim();
+                        student.SecondName = dataReader["SecondName"].ToString().Trim();
+                        student.FatherName = dataReader["FatherName"].ToString().Trim();
+                        student.DataOfBirthday = Convert.ToDateTime(dataReader["DataOfBirthday"]);
+                        student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
+                        student.Email = dataReader["Email"].ToString().Trim();
+                        student.Gender = Convert.ToInt32(dataReader["Gender"]);
+                        student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return student;
         }
     }
 }

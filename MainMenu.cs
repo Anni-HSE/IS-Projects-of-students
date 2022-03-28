@@ -52,6 +52,16 @@ namespace IS_Projects_of_students
             ShowStudents form = new ShowStudents();
             form.Show();
         }
+        private void toolStripTextBox3_Click(object sender, EventArgs e)
+        {
+            Statictics form = new Statictics();
+            form.Show();
+        } 
+        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        {
+            AddStudent form = new AddStudent();
+            form.Show();
+        }
 
         public string Login
         {
@@ -69,5 +79,6 @@ namespace IS_Projects_of_students
             }
         }
 
+       
     }
 }

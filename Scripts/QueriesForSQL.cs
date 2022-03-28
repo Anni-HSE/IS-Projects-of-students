@@ -361,5 +361,140 @@ namespace IS_Projects_of_students.Scripts
 
             return students;
         }
+
+        public static int GetCountOfMaleStudent()
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> genders = new List<string>();
+
+                command = new SqlCommand($"SELECT Gender FROM Students WHERE Gender = 1", connection);
+                try
+                {
+                    count = command.ExecuteNonQuery();           
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }              
+            }
+
+            return count;
+        }
+
+        public static int GetCountOfFemaleStudent()
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> genders = new List<string>();
+
+                command = new SqlCommand($"SELECT Gender FROM Students WHERE Gender = 2", connection);
+                try
+                {
+                    count = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static int GetCountStudents()
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> genders = new List<string>();
+
+                command = new SqlCommand($"SELECT * FROM Stdents", connection);
+                try
+                {
+                    count = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static int CreateStudent(Student person)
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                int number = -1;
+
+                string sql;
+                string values = $"values (@login, @password, @firstName, @secondName, @fatherName, @dateOfBirthday, @dateOfRegistration, @email, @gender, @group)";
+
+                sql = $"INSERT INTO Students (Login, Password, FirstName, SecondName, FatherName, DataOfBirthday, DataOfRegistration, Email, Gender, Group) " + values;
+
+
+                command = connection.CreateCommand();
+                command.CommandText = sql;
+
+                SqlParameter login = new SqlParameter("@login", System.Data.SqlDbType.NVarChar);
+                login.Value = person.Login;
+                command.Parameters.Add(login);
+
+                SqlParameter password = new SqlParameter("@password", System.Data.SqlDbType.NVarChar);
+                password.Value = person.Password;
+                command.Parameters.Add(password);
+
+                SqlParameter firstName = new SqlParameter("@firstName", System.Data.SqlDbType.NVarChar);
+                firstName.Value = person.FirstName;
+                command.Parameters.Add(firstName);
+
+                SqlParameter secondName = new SqlParameter("@secondName", System.Data.SqlDbType.NVarChar);
+                secondName.Value = person.SecondName;
+                command.Parameters.Add(secondName);
+
+                SqlParameter fatherName = new SqlParameter("@fatherName", System.Data.SqlDbType.NVarChar);
+                fatherName.Value = person.FatherName;
+                command.Parameters.Add(fatherName);
+
+                SqlParameter dob = new SqlParameter("@dateOfBirthday", System.Data.SqlDbType.DateTime);
+                dob.Value = person.DataOfBirthday;
+                command.Parameters.Add(dob);
+
+                SqlParameter dor = new SqlParameter("@dateOfRegistration", System.Data.SqlDbType.DateTime);
+                dor.Value = person.DataOfRegistration;
+                command.Parameters.Add(dor);
+
+                SqlParameter email = new SqlParameter("@email", System.Data.SqlDbType.NVarChar);
+                email.Value = person.Email;
+                command.Parameters.Add(email);
+
+                SqlParameter gender = new SqlParameter("@gender", System.Data.SqlDbType.Int);
+                gender.Value = person.Gender;
+                command.Parameters.Add(gender);
+
+                SqlParameter group = new SqlParameter("@group", System.Data.SqlDbType.Int);
+                group.Value = person.Gender;
+                command.Parameters.Add(group);
+
+                try
+                {
+                    number = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return number;
+            }
+        }
     }
 }

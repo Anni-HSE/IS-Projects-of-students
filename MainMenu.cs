@@ -12,15 +12,18 @@ namespace IS_Projects_of_students
 {
     public partial class MainMenu : Form
     {
+        private string login;
+        private bool isStudent;
+      
         public MainMenu()
         {
             InitializeComponent();
         }
 
-        public MainMenu(bool isStudent)
+        public MainMenu(bool _isStudent, string _login)
         {
             InitializeComponent();
-            if(isStudent)
+            if(_isStudent)
             {
                 menuStripTeacher.Enabled = false;
                 menuStripTeacher.Visible = false;
@@ -34,12 +37,37 @@ namespace IS_Projects_of_students
                 menuStripStudent.Enabled = false;
                 menuStripStudent.Visible = false;
             }
+
+            login = _login;
+            isStudent = _isStudent;
         }
 
         private void toolStripTextBox43_Click(object sender, EventArgs e)
         {
-            StudentInformation form = new StudentInformation();
+            StudentInformation form = new StudentInformation(login);
             form.Show();
         }
+        private void toolStripTextBox2_Click(object sender, EventArgs e)
+        {
+            ShowStudents form = new ShowStudents();
+            form.Show();
+        }
+
+        public string Login
+        {
+            get
+            {
+                return login;
+            }
+        }
+
+        public bool IsStudent
+        {
+            get
+            {
+                return isStudent;
+            }
+        }
+
     }
 }

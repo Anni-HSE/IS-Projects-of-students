@@ -135,6 +135,7 @@ namespace IS_Projects_of_students
             this.toolStripTextBox2.Size = new System.Drawing.Size(200, 26);
             this.toolStripTextBox2.Text = "Список студентов";
             this.toolStripTextBox2.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolStripTextBox2.Click += new System.EventHandler(this.toolStripTextBox2_Click);
             // 
             // toolStripTextBox3
             // 

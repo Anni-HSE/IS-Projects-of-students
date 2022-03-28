@@ -104,7 +104,7 @@ namespace IS_Projects_of_students
             if(QueriesForSQL.CheckLoginAndPassword(inputLogin.Text, inputPassword.Text, isStudent))
             {
                 MessageBox.Show("Вы авторизовались", "Авторизация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MainMenu form = new MainMenu(isStudent);
+                MainMenu form = new MainMenu(isStudent, inputLogin.Text);
                 form.Show();
             }
             else

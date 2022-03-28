@@ -286,5 +286,80 @@ namespace IS_Projects_of_students.Scripts
                 return departments.ToArray();
             }
         }
+
+        public static Student GetStudent(string login)
+        {
+            Student student = new Student();
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();        
+                command = new SqlCommand($"SELECT * FROM Students WHERE Login = '{login}'", connection);
+
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        student.IdStudent = Convert.ToInt32(dataReader["IdStudent"]);
+                        student.Login = login;
+                        student.Password = dataReader["Password"].ToString().Trim();
+                        student.FirstName = dataReader["FirstName"].ToString().Trim();
+                        student.SecondName = dataReader["SecondName"].ToString().Trim();
+                        student.FatherName = dataReader["FatherName"].ToString().Trim();
+                        student.DataOfBirthday = Convert.ToDateTime(dataReader["DataOfBirthday"]);
+                        student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
+                        student.Email = dataReader["Email"].ToString().Trim();
+                        student.Gender = Convert.ToInt32(dataReader["Gender"]);
+                        student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return student;
+        }
+
+        public static List<Student> GetStudents()
+        {
+            List<Student> students = new List<Student>();
+
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                command = new SqlCommand($"SELECT * FROM Students", connection);
+
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        Student student = new Student();
+                        student.IdStudent = Convert.ToInt32(dataReader["IdStudent"]);
+                        student.Login = dataReader["Login"].ToString().Trim();
+                        student.Password = dataReader["Password"].ToString().Trim();
+                        student.FirstName = dataReader["FirstName"].ToString().Trim();
+                        student.SecondName = dataReader["SecondName"].ToString().Trim();
+                        student.FatherName = dataReader["FatherName"].ToString().Trim();
+                        student.DataOfBirthday = Convert.ToDateTime(dataReader["DataOfBirthday"]);
+                        student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
+                        student.Email = dataReader["Email"].ToString().Trim();
+                        student.Gender = Convert.ToInt32(dataReader["Gender"]);
+                        student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        students.Add(student);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return students;
+        }
     }
 }

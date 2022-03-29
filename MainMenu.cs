@@ -73,6 +73,28 @@ namespace IS_Projects_of_students
             form.Show();
         }
 
+        private void toolStripTextBox33_Click(object sender, EventArgs e)
+        {
+            ShowProjects form = new ShowProjects();
+            form.Show();
+        }
+        private void toolStripTextBox12_Click(object sender, EventArgs e)
+        {
+            AddStudent form = new AddStudent();
+            form.Show();
+        }
+
+        private void toolStripTextBox40_Click(object sender, EventArgs e)
+        {
+            UpdateAndRemoveProjects form = new UpdateAndRemoveProjects();
+            form.Show();
+        }
+        private void toolStripTextBox39_Click(object sender, EventArgs e)
+        {
+            Grade form = new Grade();
+            form.Show();
+        }
+
         public string Login
         {
             get
@@ -89,6 +111,6 @@ namespace IS_Projects_of_students
             }
         }
 
-       
+        
     }
 }

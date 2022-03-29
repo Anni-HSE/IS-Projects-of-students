@@ -991,5 +991,330 @@ namespace IS_Projects_of_students.Scripts
                 return number;
             }
         }
+
+        public static List<Project> GetProjects()
+        {
+            List<Project> projects = new List<Project>();
+
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT * FROM Projects", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        Project project = new Project();
+                        project.IdProject = Convert.ToInt32(dataReader["IdProject"]);
+                        project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
+                        project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
+                        project.Subject = Convert.ToInt32(dataReader["Subject"]);
+                        project.NameProject = dataReader["NameProject"].ToString().Trim();
+                        project.DescriptionProject = dataReader["DescriptionProject"].ToString().Trim();
+                        projects.Add(project);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return projects;
+        }
+
+        public static object[] GetFacilitiesId()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> facilities = new List<string>();
+
+                command = new SqlCommand($"SELECT Facility FROM Departments", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        facilities.Add(dataReader["Facility"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return facilities.ToArray();
+            }
+        }
+
+        public static object[] GetDepartmentsId()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> departments = new List<string>();
+
+                command = new SqlCommand($"SELECT Department FROM Subjects", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        departments.Add(dataReader["Department"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return departments.ToArray();
+            }
+        }
+
+        public static bool CheckNameProject(string nameProject)
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT * FROM Projects WHERE NameProject = '{nameProject}'", connection);
+
+                SqlDataReader dataReader = command.ExecuteReader();
+
+                return dataReader.HasRows;
+            }
+        }
+
+        public static int CreateProject(Project project)
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                int number = -1;
+
+                string sql;
+                string values = $"values (@NameProject, @DescriptionProject, @Deadline, @Subject, @TypeProject)";
+
+                sql = $"INSERT INTO Projects (NameProject, DescriptionProject, Deadline, Subject, TypeProject) " + values;
+
+
+                command = connection.CreateCommand();
+                command.CommandText = sql;
+
+                SqlParameter NameProject = new SqlParameter("@NameProject", System.Data.SqlDbType.NVarChar);
+                NameProject.Value = project.NameProject;
+                command.Parameters.Add(NameProject);
+
+                SqlParameter DescriptionProject = new SqlParameter("@DescriptionProject", System.Data.SqlDbType.NVarChar);
+                DescriptionProject.Value = project.DescriptionProject;
+                command.Parameters.Add(DescriptionProject);
+
+                SqlParameter Deadline = new SqlParameter("@Deadline", System.Data.SqlDbType.DateTime);
+                Deadline.Value = project.Deadline;
+                command.Parameters.Add(Deadline);
+
+
+                SqlParameter Subject = new SqlParameter("@Subject", System.Data.SqlDbType.Int);
+                Subject.Value = project.Subject;
+                command.Parameters.Add(Subject);
+
+                SqlParameter TypeProject = new SqlParameter("@TypeProject", System.Data.SqlDbType.Int);
+                TypeProject.Value = project.TypeProject;
+                command.Parameters.Add(TypeProject);
+
+                try
+                {
+                    number = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return number;
+            }
+        }
+
+        public static object[] GetProjectIds()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> ids = new List<string>();
+
+                command = new SqlCommand($"SELECT IdProject FROM Projects", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        ids.Add(dataReader["IdProject"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return ids.ToArray();
+            }
+        }
+
+        public static int UpdateProject(int id, Project project)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"UPDATE Projects SET NameProject = @NameProject, DescriptionProject = @DescriptionProject, Deadline = @Deadline, Subject = @Subject, TypeProject = @TypeProject" +
+                    $" WHERE IdProject = {id}", connection);
+
+                SqlParameter NameProject = new SqlParameter("@NameProject", System.Data.SqlDbType.NVarChar);
+                NameProject.Value = project.NameProject;
+                command.Parameters.Add(NameProject);
+
+                SqlParameter DescriptionProject = new SqlParameter("@DescriptionProject", System.Data.SqlDbType.NVarChar);
+                DescriptionProject.Value = project.DescriptionProject;
+                command.Parameters.Add(DescriptionProject);
+
+                SqlParameter Deadline = new SqlParameter("@Deadline", System.Data.SqlDbType.DateTime);
+                Deadline.Value = project.Deadline;
+                command.Parameters.Add(Deadline);
+
+
+                SqlParameter Subject = new SqlParameter("@Subject", System.Data.SqlDbType.Int);
+                Subject.Value = project.Subject;
+                command.Parameters.Add(Subject);
+
+                SqlParameter TypeProject = new SqlParameter("@TypeProject", System.Data.SqlDbType.Int);
+                TypeProject.Value = project.TypeProject;
+                command.Parameters.Add(TypeProject);
+
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static int RemoveProject(int id)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"DELETE FROM Projects WHERE IdProject = {id}", connection);
+
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static Project GetProject(int id)
+        {
+            Project project = new Project();
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                command = new SqlCommand($"SELECT * FROM Projects WHERE idProject = {id}", connection);
+
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        project.IdProject = id;
+                        project.NameProject = dataReader["NameProject"].ToString().Trim();
+                        project.DescriptionProject = dataReader["DescriptionProject"].ToString().Trim();
+                        project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
+                        project.Subject = Convert.ToInt32(dataReader["Subject"]);
+                        project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return project;
+        }
+
+        public static object[] GetstudentProjects(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> ids = new List<string>();
+
+                command = new SqlCommand($"SELECT Project FROM StudentProjects WHERE Stident = {id}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        ids.Add(dataReader["Project"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return ids.ToArray();
+            }
+        }
+
+        public static int UpdateStudentProject(int idStudent, int idProject, int grade)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"UPDATE StudentProjects SET Grade = @Grade WHERE Project = {idProject} AND Student = {idStudent}", connection);
+
+                SqlParameter Grade = new SqlParameter("@Grade", System.Data.SqlDbType.NVarChar);
+                Grade.Value = grade;
+                command.Parameters.Add(Grade);
+
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
     }
 }

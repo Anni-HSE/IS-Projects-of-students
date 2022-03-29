@@ -118,32 +118,35 @@ namespace IS_Projects_of_students
 
         private void update_Click(object sender, EventArgs e)
         {
-            if(selectedId.SelectedIndex == -1)
+            if (checkData())
             {
-                MessageBox.Show("Ошибка. Вы не выбрали студента", "Обновление студента", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                var fio = inputFIO.Text.Split(' ');
-                Student student = new Student();
-                student.Password = inputPassword.Text;
-                student.FatherName = fio[2];
-                student.FirstName = fio[0];
-                student.SecondName = fio[1];
-                student.Email = inputEmail.Text;
-                student.DataOfBirthday = inputDoB.Value;
-                student.Gender = inputGender.SelectedIndex + 1;
-                student.IdGroup = inputGroup.SelectedIndex + 1;
+                if (selectedId.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Ошибка. Вы не выбрали студента", "Обновление студента", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    var fio = inputFIO.Text.Split(' ');
+                    Student student = new Student();
+                    student.Password = inputPassword.Text;
+                    student.FatherName = fio[2];
+                    student.FirstName = fio[0];
+                    student.SecondName = fio[1];
+                    student.Email = inputEmail.Text;
+                    student.DataOfBirthday = inputDoB.Value;
+                    student.Gender = inputGender.SelectedIndex + 1;
+                    student.IdGroup = inputGroup.SelectedIndex + 1;
 
-                QueriesForSQL.UpdateStudnent(Convert.ToInt32(selectedId.SelectedItem.ToString()), student);
+                    QueriesForSQL.UpdateStudnent(Convert.ToInt32(selectedId.SelectedItem.ToString()), student);
 
-                MessageBox.Show("Студент обновлен", "Обновление студента", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Студент обновлен", "Обновление студента", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                students = QueriesForSQL.GetStudents();
+                    students = QueriesForSQL.GetStudents();
 
-                dataGridView1.Rows.Clear();
-                dowlandDatainGridView();             
-                dataGridView1.Refresh();
+                    dataGridView1.Rows.Clear();
+                    dowlandDatainGridView();
+                    dataGridView1.Refresh();
+                }
             }
         }
 

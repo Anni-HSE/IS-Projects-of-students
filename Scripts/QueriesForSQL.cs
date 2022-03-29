@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace IS_Projects_of_students.Scripts
 {
@@ -639,6 +640,356 @@ namespace IS_Projects_of_students.Scripts
             }
 
             return student;
+        }
+
+        public static object[] GetSubjects()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> subjects = new List<string>();
+
+                command = new SqlCommand($"SELECT NameSubject FROM Subjects", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        subjects.Add(dataReader["NameSubject"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return subjects.ToArray();
+            }
+        }
+
+        public static int GetStudentId(string login)
+        {
+            int id = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT IdStudent FROM Students WHERE Login = '{login}'", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                       id = Convert.ToInt32(dataReader["IdStudent"]);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return id;
+            }
+        }
+
+        public static List<StudentsProjects> GetStudentsProjects(int id)
+        {
+            List<StudentsProjects> projects = new List<StudentsProjects>();
+
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT * FROM StudentProjects WHERE Student = {id}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        StudentsProjects project = new StudentsProjects();
+                        project.student = Convert.ToInt32(dataReader["Student"]);
+                        project.project = Convert.ToInt32(dataReader["Project"]);
+                        project.file = Convert.ToInt32(dataReader["File"]);
+                        project.note = Convert.ToInt32(dataReader["Note"]);
+                        project.comment = dataReader["Comment"].ToString().Trim();
+                        projects.Add(project);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return projects;
+        }
+
+        public static List<Project> GetProjects(int id)
+        {
+            List<Project> projects = new List<Project>();
+
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT * FROM Projects WHERE IdProject = {id}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        Project project = new Project();
+                        project.IdProject = Convert.ToInt32(dataReader["IdProject"]);
+                        project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
+                        project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
+                        project.Subject = Convert.ToInt32(dataReader["Subject"]);
+                        project.NameProject = dataReader["NameProject"].ToString().Trim();
+                        project.DescriptionProject = dataReader["DescriptionProject"].ToString().Trim();
+                        projects.Add(project);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return projects;
+        }
+
+        public static object[] GetProjectTypes()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> projectTypes = new List<string>();
+
+                command = new SqlCommand($"SELECT NameProjectType FROM ProjectTypess", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        projectTypes.Add(dataReader["NameProjectType"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return projectTypes.ToArray();
+            }
+        }
+
+        public static int GetNote(int idProject, int idStudent)
+        {
+            int note = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT Note FROM StudentProjects WHERE Student = {idStudent} AND Project = {idProject}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["Note"] != null)
+                            note = Convert.ToInt32(dataReader["Note"]);
+                        else
+                            note = 0;
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return note;
+            }
+        }
+
+        public static DateTime GetDowlandDate(int idProject)
+        {
+            int id = GetFileId(idProject);
+            DateTime dateTime = new DateTime();
+
+            if (id != 0)
+            {
+                using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+                {
+                    connection.Open();
+
+                    command = new SqlCommand($"SELECT DateOfDowland FROM Files WHERE IdFile = {id}", connection);
+                    try
+                    {
+                        SqlDataReader dataReader = command.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            if (dataReader["DateOfDowland"] != null)
+                                dateTime = Convert.ToDateTime(dataReader["Note"]);
+                            else
+                                dateTime = new DateTime();
+                        }
+                        dataReader.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }               
+                }
+            }
+
+            return dateTime;
+        }
+
+        public static int GetFileId(int idProject)
+        {
+            int id = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT File FROM StudentProjects WHERE Project = {idProject}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["File"] != null)
+                            id = Convert.ToInt32(dataReader["File"]);
+                        else
+                            id = 0;
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return id;
+            }
+        }
+
+        public static string GetDescriptionProject(int idProject)
+        {
+            string description = "";
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT DescriptionProject FROM Projects WHERE IdProject = {idProject}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                            description = dataReader["DescriptionProject"].ToString().Trim();
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return description;
+            }
+        }
+
+        public static int GetProjectId(string nameProject)
+        {
+            int id = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT IdProject FROM Projects WHERE IdProject = '{nameProject}'", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        id = Convert.ToInt32(dataReader["IdProject"]);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return id;
+            }
+        }
+
+        public static string GetComment(int idProject, int idStudent)
+        {
+            string comment = "";
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT DescriptionProject FROM StudentProjects WHERE Project = {idProject} AND Student = {idStudent}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["DescriptionProject"] != null)
+                            comment = dataReader["DescriptionProject"].ToString().Trim();
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return comment;
+            }
+        }
+
+        public static int DowlandFile(XElement element)
+        {
+            int number = -1;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"NSERT INTO Files (FileName, DateOfDowland, FileData) VALUES (@FileName, @DateOfDowland, @FileData)", connection);
+
+                SqlParameter FileName = new SqlParameter("@FileName", System.Data.SqlDbType.NVarChar);
+                FileName.Value = element.Name.LocalName;
+                command.Parameters.Add(FileName);
+
+                SqlParameter DateOfDowland = new SqlParameter("@DateOfDowland", System.Data.SqlDbType.DateTime);
+                DateOfDowland.Value = DateTime.Now;
+                command.Parameters.Add(DateOfDowland);
+
+                SqlParameter FileData = new SqlParameter("@FileData", System.Data.SqlDbType.Xml);
+                FileData.Value = element;
+                command.Parameters.Add(FileData);
+
+                try
+                {
+                    number = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return number;
+            }
         }
     }
 }

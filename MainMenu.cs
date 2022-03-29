@@ -67,6 +67,11 @@ namespace IS_Projects_of_students
             UpdateAndRemoveStudent form = new UpdateAndRemoveStudent();
             form.Show();
         }
+        private void toolStripTextBox44_Click(object sender, EventArgs e)
+        {
+            StudentProjects form = new StudentProjects(login);
+            form.Show();
+        }
 
         public string Login
         {
@@ -84,6 +89,6 @@ namespace IS_Projects_of_students
             }
         }
 
-        
+       
     }
 }

@@ -79,7 +79,6 @@ namespace IS_Projects_of_students
             this.toolStripTextBox36 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox37 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox38 = new System.Windows.Forms.ToolStripTextBox();
-            this.факультетовToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripStudent = new System.Windows.Forms.MenuStrip();
             this.toolStripTextBox43 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox44 = new System.Windows.Forms.ToolStripTextBox();
@@ -240,8 +239,7 @@ namespace IS_Projects_of_students
             this.направленийToolStripMenuItem,
             this.группToolStripMenuItem,
             this.кафедрToolStripMenuItem,
-            this.дисциплинToolStripMenuItem,
-            this.факультетовToolStripMenuItem1});
+            this.дисциплинToolStripMenuItem});
             this.уПРАВЛЕНИЕУЧЕБНЫМЗАВЕДЕНИЕМToolStripMenuItem.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.уПРАВЛЕНИЕУЧЕБНЫМЗАВЕДЕНИЕМToolStripMenuItem.ForeColor = System.Drawing.Color.SteelBlue;
             this.уПРАВЛЕНИЕУЧЕБНЫМЗАВЕДЕНИЕМToolStripMenuItem.Name = "уПРАВЛЕНИЕУЧЕБНЫМЗАВЕДЕНИЕМToolStripMenuItem";
@@ -626,12 +624,6 @@ namespace IS_Projects_of_students
             this.toolStripTextBox38.Text = "Печать";
             this.toolStripTextBox38.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // факультетовToolStripMenuItem1
-            // 
-            this.факультетовToolStripMenuItem1.Name = "факультетовToolStripMenuItem1";
-            this.факультетовToolStripMenuItem1.Size = new System.Drawing.Size(270, 28);
-            this.факультетовToolStripMenuItem1.Text = "Факультетов";
-            // 
             // menuStripStudent
             // 
             this.menuStripStudent.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -659,6 +651,7 @@ namespace IS_Projects_of_students
             this.toolStripTextBox44.Name = "toolStripTextBox44";
             this.toolStripTextBox44.Size = new System.Drawing.Size(150, 31);
             this.toolStripTextBox44.Text = "МОИ ПРОЕКТЫ";
+            this.toolStripTextBox44.Click += new System.EventHandler(this.toolStripTextBox44_Click);
             // 
             // MainMenu
             // 
@@ -735,6 +728,5 @@ namespace IS_Projects_of_students
         private System.Windows.Forms.MenuStrip menuStripStudent;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox43;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox44;
-        private System.Windows.Forms.ToolStripMenuItem факультетовToolStripMenuItem1;
     }
 }

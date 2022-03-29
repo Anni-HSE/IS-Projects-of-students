@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IS_Projects_of_students.Classes
 {
-    class Project
+    public class Project
     {
         private int idProject;
         private string nameProject;

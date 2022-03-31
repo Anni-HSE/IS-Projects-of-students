@@ -167,14 +167,15 @@ namespace IS_Projects_of_students
                 dowlandDatainGridView();
                 dataGridView1.Refresh();
 
+                selectedId.Text = "";
                 selectedId.Items.Clear();
-                selectedId.Items.Add(QueriesForSQL.GetStudentIds());
+                selectedId.Items.AddRange(QueriesForSQL.GetStudentIds());
             }
         }
 
         private void selectedId_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Student student = QueriesForSQL.GetStudent(Convert.ToInt32(selectedId.SelectedItem.ToString()));
+            Student student = QueriesForSQL.GetStudent(Convert.ToInt32(selectedId.SelectedItem));
             inputLogin.Text = student.Login;
             inputPassword.Text = student.Password;
             inputFIO.Text = student.SecondName + " " + student.FirstName + " " + student.FatherName;

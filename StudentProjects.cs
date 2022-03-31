@@ -20,7 +20,6 @@ namespace IS_Projects_of_students
         private string login;
         private object[] subjects;
         private object[] projectTypes;
-        private object[] files;
         private List<StudentsProjects> projectsStudents;
         private List<Project> projects;
 
@@ -70,9 +69,16 @@ namespace IS_Projects_of_students
             foreach (Project project in projects)
             {
                 int note = QueriesForSQL.GetNote(project.IdProject, idStudent);
-                DateTime dateOfDowland = QueriesForSQL.GetDowlandDate(project.IdProject);
+                string solutiontars = QueriesForSQL.GetSolutionTask(project.IdProject, idStudent);
+                DateTime dowland = QueriesForSQL.GetDowlandDate(project.IdProject, idStudent);
 
-                dataGridView1.Rows.Add(project.NameProject, projectTypes[project.TypeProject - 1].ToString(), project.Deadline, dateOfDowland.ToString(), note);
+                string date = "";
+                if (dowland == new DateTime())
+                    date = ""; 
+                else
+                    date = dowland.ToString();
+
+                dataGridView1.Rows.Add(project.NameProject, projectTypes[project.TypeProject - 1].ToString(), project.Deadline, solutiontars, date, note);
             }
 
             dataGridView1.Refresh();
@@ -82,45 +88,19 @@ namespace IS_Projects_of_students
         {
             int idProject = QueriesForSQL.GetProjectId(selectedProject.SelectedItem.ToString());
             writeDecription.Text = QueriesForSQL.GetDescriptionProject(idProject);
-            writeComentary.Text = QueriesForSQL.GetComment(idProject, idProject);
-        }
+            writeCommentary.Text = QueriesForSQL.GetComment(idProject, idStudent);
+            inputSolutionTask.Text = QueriesForSQL.GetSolutionTask(idProject, idStudent);
 
-        private void addFile_Click(object sender, EventArgs e)
-        {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            if(inputSolutionTask.Text == "")
             {
-                openFileDialog.InitialDirectory = "c:\\";
-                openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    //Get the path of specified file
-                    filePath = openFileDialog.FileName;
-
-                    //Read the contents of the file into a stream
-                    var fileStream = openFileDialog.OpenFile();
-
-                    using (StreamReader reader = new StreamReader(fileStream))
-                    {
-                        fileContent = reader.ReadToEnd();
-                    }
-                }
+                addSolution.Enabled = true;
+                updateSolution.Enabled = false;
             }
-
-            string[] data = File.ReadAllLines(filePath);
-            XElement root = new XElement("root", from item in data select new XElement("Line", item));
-
-            QueriesForSQL.DowlandFile(root);
-
-            MessageBox.Show("Файл загружен", "Заугрузка файла", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            DowlandData();
-            dowlandDatainGridView();
+            else
+            {
+                addSolution.Enabled = false;
+                updateSolution.Enabled = true;
+            }
         }
 
         private void DowlandData()
@@ -130,6 +110,26 @@ namespace IS_Projects_of_students
             projectsStudents = QueriesForSQL.GetStudentsProjects(idStudent);
             projects = QueriesForSQL.GetProjects(projectsStudents);
             projectTypes = QueriesForSQL.GetProjectTypes();
+        }
+
+        private void addSolution_Click(object sender, EventArgs e)
+        {
+            int idProject = QueriesForSQL.GetProjectId(selectedProject.SelectedItem.ToString());
+            QueriesForSQL.UpdateSolutionTask(idProject, idStudent, inputSolutionTask.Text);
+
+            MessageBox.Show("Решение добавлено", "Д обавление решения к проекту", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            dowlandDatainGridView();
+        }
+
+        private void updateSolution_Click(object sender, EventArgs e)
+        {
+            int idProject = QueriesForSQL.GetProjectId(selectedProject.SelectedItem.ToString());
+            QueriesForSQL.UpdateSolutionTask(idProject, idStudent, inputSolutionTask.Text);
+
+            MessageBox.Show("Решение обновлено", "обновление решения к проекту", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            dowlandDatainGridView();
         }
     }
 }

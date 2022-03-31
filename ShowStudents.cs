@@ -52,16 +52,16 @@ namespace IS_Projects_of_students
         private void button1_Click(object sender, EventArgs e)
         {
             // creating Excel Application  
-            Microsoft.Office.Interop.Excel._Application app = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
             // creating new WorkBook within Excel application  
-            Microsoft.Office.Interop.Excel._Workbook workbook = app.Workbooks.Add(Type.Missing);
-            // creating new Excelsheet in workbook  
-            Microsoft.Office.Interop.Excel._Worksheet worksheet = null;
 
-            // get the reference of first sheet. By default its name is Sheet1.  
+            app.Visible = true;
+            Microsoft.Office.Interop.Excel.Workbook workbook = app.Workbooks.Add();
+            // creating new Excelsheet in workbook  
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Worksheets[1];
+
             // store its reference to worksheet  
-            worksheet = (Microsoft.Office.Interop.Excel._Worksheet)workbook.Sheets["Sheet1"];
-            worksheet = (Microsoft.Office.Interop.Excel._Worksheet)workbook.ActiveSheet;
+            worksheet = workbook.ActiveSheet;
             // changing the name of active sheet  
             worksheet.Name = "Exported from gridview";
             // storing header part in Excel  
@@ -77,8 +77,6 @@ namespace IS_Projects_of_students
                     worksheet.Cells[i + 2, j + 1] = dataGridView1.Rows[i].Cells[j].Value.ToString();
                 }
             }
-            // save the application  
-            workbook.SaveAs("c:\\output.xls", Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
         }
     }
 }

@@ -75,7 +75,7 @@ namespace IS_Projects_of_students
                 dataGridView1.Refresh();
 
                 selectedId.Items.Clear();
-                selectedId.Items.Add(QueriesForSQL.GetStudentIds());
+                selectedId.Items.AddRange(QueriesForSQL.GetStudentIds());
             }
         }
 
@@ -127,7 +127,7 @@ namespace IS_Projects_of_students
 
         private void selectedId_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Project project = QueriesForSQL.GetProject(Convert.ToInt32(selectedId.SelectedItem.ToString()));
+            Project project = QueriesForSQL.GetProject(Convert.ToInt32(selectedId.SelectedItem));
             inputNameProject.Text = project.NameProject;
             inputDescription.Text = project.DescriptionProject;
             selectedSubject.SelectedIndex = project.Subject - 1;

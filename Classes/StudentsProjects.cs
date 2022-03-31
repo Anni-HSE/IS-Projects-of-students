@@ -11,7 +11,8 @@ namespace IS_Projects_of_students.Classes
         public int project;
         public int student;
         public string comment;
-        public int file;
+        public string solutionTask;
+        public DateTime dateOfDowland;
         public int note;
 
         public StudentsProjects()
@@ -19,7 +20,8 @@ namespace IS_Projects_of_students.Classes
             project = 0;
             student = 0;
             comment = "";
-            file = 0;
+            solutionTask = "";
+            dateOfDowland = new DateTime();
             note = 0;
         }
     }

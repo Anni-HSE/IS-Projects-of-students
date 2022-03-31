@@ -717,9 +717,21 @@ namespace IS_Projects_of_students.Scripts
                         StudentsProjects project = new StudentsProjects();
                         project.student = Convert.ToInt32(dataReader["Student"]);
                         project.project = Convert.ToInt32(dataReader["Project"]);
-                        project.file = Convert.ToInt32(dataReader["File"]);
-                        project.note = Convert.ToInt32(dataReader["Note"]);
-                        project.comment = dataReader["Commentary"].ToString().Trim();
+                        
+                        if (dataReader["SolutionTask"] != DBNull.Value)
+                            project.solutionTask = dataReader["SolutionTask"].ToString().Trim();
+                        else
+                            project.solutionTask = "";
+
+                        if (dataReader["Note"] != DBNull.Value)
+                            project.note = Convert.ToInt32(dataReader["Note"]);
+                        else
+                            project.note = 0;
+
+                        if (dataReader["Commentary"] != DBNull.Value)
+                            project.comment = dataReader["Commentary"].ToString().Trim();
+                        else
+                            project.comment = "";
                         projects.Add(project);
                     }
                     dataReader.Close();
@@ -750,7 +762,7 @@ namespace IS_Projects_of_students.Scripts
                         while (dataReader.Read())
                         {
                             Project project = new Project();
-                            project.IdProject = Convert.ToInt32(dataReader["IdProject"]);
+                            project.IdProject = Convert.ToInt32(dataReader["IdProjects"]);
                             project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
                             project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
                             project.Subject = Convert.ToInt32(dataReader["Subject"]);
@@ -824,70 +836,7 @@ namespace IS_Projects_of_students.Scripts
                 return note;
             }
         }
-
-        public static DateTime GetDowlandDate(int idProject)
-        {
-            int id = GetFileId(idProject);
-            DateTime dateTime = new DateTime();
-
-            if (id != 0)
-            {
-                using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
-                {
-                    connection.Open();
-
-                    command = new SqlCommand($"SELECT DateOfDowland FROM Files WHERE IdFile = {id}", connection);
-                    try
-                    {
-                        SqlDataReader dataReader = command.ExecuteReader();
-                        while (dataReader.Read())
-                        {
-                            if (dataReader["DateOfDowland"] != DBNull.Value)
-                                dateTime = Convert.ToDateTime(dataReader["DateOfDowland"]);
-                            else
-                                dateTime = new DateTime();
-                        }
-                        dataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }               
-                }
-            }
-
-            return dateTime;
-        }
-
-        public static int GetFileId(int idProject)
-        {
-            int id = 0;
-            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
-            {
-                connection.Open();
-
-                command = new SqlCommand($"SELECT File FROM StudentProjects WHERE Project = {idProject}", connection);
-                try
-                {
-                    SqlDataReader dataReader = command.ExecuteReader();
-                    while (dataReader.Read())
-                    {
-                        if (dataReader["File"] != DBNull.Value)
-                            id = Convert.ToInt32(dataReader["File"]);
-                        else
-                            id = 0;
-                    }
-                    dataReader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                return id;
-            }
-        }
-
+  
         public static string GetDescriptionProject(int idProject)
         {
             string description = "";
@@ -921,13 +870,13 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"SELECT IdProjects FROM Projects WHERE IdProjects = '{nameProject}'", connection);
+                command = new SqlCommand($"SELECT IdProjects FROM Projects WHERE NameProject = '{nameProject}'", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        id = Convert.ToInt32(dataReader["IdProject"]);
+                        id = Convert.ToInt32(dataReader["IdProjects"]);
                     }
                     dataReader.Close();
                 }
@@ -966,41 +915,7 @@ namespace IS_Projects_of_students.Scripts
                 return comment;
             }
         }
-
-        public static int DowlandFile(XElement element)
-        {
-            int number = -1;
-            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
-            {
-                connection.Open();
-
-                command = new SqlCommand($"NSERT INTO Files (FileName, DateOfDowland, FileData) VALUES (@FileName, @DateOfDowland, @FileData)", connection);
-
-                SqlParameter FileName = new SqlParameter("@FileName", System.Data.SqlDbType.NVarChar);
-                FileName.Value = element.Name.LocalName;
-                command.Parameters.Add(FileName);
-
-                SqlParameter DateOfDowland = new SqlParameter("@DateOfDowland", System.Data.SqlDbType.DateTime);
-                DateOfDowland.Value = DateTime.Now;
-                command.Parameters.Add(DateOfDowland);
-
-                SqlParameter FileData = new SqlParameter("@FileData", System.Data.SqlDbType.Xml);
-                FileData.Value = element;
-                command.Parameters.Add(FileData);
-
-                try
-                {
-                    number = command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                return number;
-            }
-        }
-
+    
         public static List<Project> GetProjects()
         {
             List<Project> projects = new List<Project>();
@@ -1324,6 +1239,334 @@ namespace IS_Projects_of_students.Scripts
             }
 
             return count;
+        }
+
+        public static string GetSolutionTask(int idProject, int idStudent)
+        {
+            string solution ="";
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT SolutionTask FROM StudentProjects WHERE Student = {idStudent} AND Project = {idProject}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["SolutionTask"] != DBNull.Value)
+                            solution = dataReader["SolutionTask"].ToString().Trim();
+                        else
+                            solution = "";
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return solution;
+            }
+        }
+
+        public static DateTime GetDowlandDate(int idProject, int idStudent)
+        {
+            DateTime date = new DateTime();
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT DateofDowland FROM StudentProjects WHERE Student = {idStudent} AND Project = {idProject}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        if (dataReader["DateofDowland"] != DBNull.Value)
+                            date = Convert.ToDateTime(dataReader["DateofDowland"]);
+                        else
+                            date = new DateTime();
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return date;
+            }
+        }
+
+        public static int UpdateSolutionTask(int idStudent, int idProject, string solution)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"UPDATE StudentProjects SET SolutionTask = @SolutionTask, DateofDowland = @DateofDowland WHERE Project = {idProject} AND Student = {idStudent}", connection);
+
+                SqlParameter solutionTask = new SqlParameter("@SolutionTask", System.Data.SqlDbType.NVarChar);
+                solutionTask.Value = solution;
+                command.Parameters.Add(solutionTask);
+
+                SqlParameter dateOfDowland = new SqlParameter("@DateofDowland", System.Data.SqlDbType.DateTime);
+                dateOfDowland.Value = DateTime.Now;
+                command.Parameters.Add(dateOfDowland);
+
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static object[] GetstudentsFIO()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> fios = new List<string>();
+
+                command = new SqlCommand($"SELECT FirstName, SecondName, FatherName FROM Students", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        string fio = dataReader["SecondName"].ToString().Trim() + " " + dataReader["FirstName"].ToString().Trim() + " " + dataReader["FatherName"].ToString().Trim();
+                        fios.Add(fio);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return fios.ToArray();
+            }
+        }
+
+        public static object[] GetProjectNames()
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> names = new List<string>();
+
+                command = new SqlCommand($"SELECT NameProject FROM Projects", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        names.Add(dataReader["NameProject"].ToString().Trim());
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return names.ToArray();
+            }
+        }
+
+        public static int GetStudentIdUseFio(string fio)
+        {
+            string[] fioname = fio.Split(' ');
+            int id = -1;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT IdStudent FROM Students WHERE SecondName = '{fioname[0]} AND FirstName = {fioname[1]} AND FAtherName = {fioname[2]}'", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        id = Convert.ToInt32(dataReader["IdStudent"]);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return id;
+            }
+        }
+
+        public static int CheckStudentProject(int idStudent, int idProject)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                List<string> genders = new List<string>();
+
+                command = new SqlCommand($"SELECT COUNT(*) FROM StudentProjects WHERE Student = {idStudent} AND Project = {idProject}", connection);
+                try
+                {
+                    count = (int)command.ExecuteScalar();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static int CreateStudentProject(int studentId, int projectId)
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                int number = -1;
+
+                string sql;
+                string values = $"values (@studentId, @projectId)";
+
+                sql = $"INSERT INTO StudentProjects (Student, Project) " + values;
+
+
+                command = connection.CreateCommand();
+                command.CommandText = sql;
+
+                SqlParameter Student = new SqlParameter("@studentId", System.Data.SqlDbType.Int);
+                Student.Value = studentId;
+                command.Parameters.Add(Student);
+
+                SqlParameter Project = new SqlParameter("@projectId", System.Data.SqlDbType.Int);
+                Project.Value = projectId;
+                command.Parameters.Add(Project);
+              
+                try
+                {
+                    number = command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return number;
+            }
+        }
+
+        public static int UpdateGrade(int idStudent, int idProject, string commentary, int grade)
+        {
+            int count = 0;
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"UPDATE StudentProjects SET Note = @Note, Commentary = @Commentary WHERE Project = {idProject} AND Student = {idStudent}", connection);
+
+                SqlParameter Note = new SqlParameter("@Note", System.Data.SqlDbType.Int);
+                Note.Value = grade;
+                command.Parameters.Add(Note);
+
+                SqlParameter Commentary = new SqlParameter("@Commentary", System.Data.SqlDbType.NVarChar);
+                Commentary.Value = commentary;
+                command.Parameters.Add(Commentary);
+
+                try
+                {
+                    count = (int)command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return count;
+        }
+
+        public static string GetstudentFIO(int idStudent)
+        {
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+                string fio = "";
+
+                command = new SqlCommand($"SELECT FirstName, SecondName, FatherName FROM Students WHERE IdStudent = {idStudent}", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        fio = dataReader["SecondName"].ToString().Trim() + " " + dataReader["FirstName"].ToString().Trim() + " " + dataReader["FatherName"].ToString().Trim();
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                return fio;
+            }
+        }
+
+        public static List<StudentsProjects> GetStudentsProjects()
+        {
+            List<StudentsProjects> projects = new List<StudentsProjects>();
+
+            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            {
+                connection.Open();
+
+                command = new SqlCommand($"SELECT * FROM StudentProjects", connection);
+                try
+                {
+                    SqlDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        StudentsProjects project = new StudentsProjects();
+                        project.student = Convert.ToInt32(dataReader["Student"]);
+                        project.project = Convert.ToInt32(dataReader["Project"]);
+
+                        if (dataReader["SolutionTask"] != DBNull.Value)
+                            project.solutionTask = dataReader["SolutionTask"].ToString().Trim();
+                        else
+                            project.solutionTask = "";
+
+                        if (dataReader["Note"] != DBNull.Value)
+                            project.note = Convert.ToInt32(dataReader["Note"]);
+                        else
+                            project.note = 0;
+
+                        if (dataReader["Commentary"] != DBNull.Value)
+                            project.comment = dataReader["Commentary"].ToString().Trim();
+                        else
+                            project.comment = "";
+                        projects.Add(project);
+                    }
+                    dataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return projects;
         }
     }
 }

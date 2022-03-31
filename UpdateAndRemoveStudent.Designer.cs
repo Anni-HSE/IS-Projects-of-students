@@ -30,16 +30,6 @@ namespace IS_Projects_of_students
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.IdStudentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Login = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SecondName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FatherName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataOfBirthday = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataOfRegistration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Gender = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label9 = new System.Windows.Forms.Label();
             this.inputGroup = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -59,6 +49,15 @@ namespace IS_Projects_of_students
             this.selectedId = new System.Windows.Forms.ComboBox();
             this.update = new System.Windows.Forms.Button();
             this.delete = new System.Windows.Forms.Button();
+            this.Login = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SecondName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FatherName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataOfBirthday = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataOfRegistration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Gender = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,7 +67,6 @@ namespace IS_Projects_of_students
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IdStudentColumn,
             this.Login,
             this.Email,
             this.FirstName,
@@ -84,66 +82,6 @@ namespace IS_Projects_of_students
             this.dataGridView1.RowTemplate.Height = 25;
             this.dataGridView1.Size = new System.Drawing.Size(890, 486);
             this.dataGridView1.TabIndex = 1;
-            // 
-            // IdStudentColumn
-            // 
-            this.IdStudentColumn.HeaderText = "Id";
-            this.IdStudentColumn.Name = "IdStudentColumn";
-            this.IdStudentColumn.ReadOnly = true;
-            // 
-            // Login
-            // 
-            this.Login.HeaderText = "login";
-            this.Login.Name = "Login";
-            this.Login.ReadOnly = true;
-            // 
-            // Email
-            // 
-            this.Email.HeaderText = "Email";
-            this.Email.Name = "Email";
-            this.Email.ReadOnly = true;
-            // 
-            // FirstName
-            // 
-            this.FirstName.HeaderText = "FirstName";
-            this.FirstName.Name = "FirstName";
-            this.FirstName.ReadOnly = true;
-            // 
-            // SecondName
-            // 
-            this.SecondName.HeaderText = "SecondName";
-            this.SecondName.Name = "SecondName";
-            this.SecondName.ReadOnly = true;
-            // 
-            // FatherName
-            // 
-            this.FatherName.HeaderText = "FatherName";
-            this.FatherName.Name = "FatherName";
-            this.FatherName.ReadOnly = true;
-            // 
-            // DataOfBirthday
-            // 
-            this.DataOfBirthday.HeaderText = "DataOfBirthday";
-            this.DataOfBirthday.Name = "DataOfBirthday";
-            this.DataOfBirthday.ReadOnly = true;
-            // 
-            // DataOfRegistration
-            // 
-            this.DataOfRegistration.HeaderText = "DataOfRegistration";
-            this.DataOfRegistration.Name = "DataOfRegistration";
-            this.DataOfRegistration.ReadOnly = true;
-            // 
-            // Gender
-            // 
-            this.Gender.HeaderText = "Gender";
-            this.Gender.Name = "Gender";
-            this.Gender.ReadOnly = true;
-            // 
-            // Group
-            // 
-            this.Group.HeaderText = "Group";
-            this.Group.Name = "Group";
-            this.Group.ReadOnly = true;
             // 
             // label9
             // 
@@ -337,6 +275,60 @@ namespace IS_Projects_of_students
             this.delete.UseVisualStyleBackColor = false;
             this.delete.Click += new System.EventHandler(this.delete_Click);
             // 
+            // Login
+            // 
+            this.Login.HeaderText = "login";
+            this.Login.Name = "Login";
+            this.Login.ReadOnly = true;
+            // 
+            // Email
+            // 
+            this.Email.HeaderText = "Email";
+            this.Email.Name = "Email";
+            this.Email.ReadOnly = true;
+            // 
+            // FirstName
+            // 
+            this.FirstName.HeaderText = "FirstName";
+            this.FirstName.Name = "FirstName";
+            this.FirstName.ReadOnly = true;
+            // 
+            // SecondName
+            // 
+            this.SecondName.HeaderText = "SecondName";
+            this.SecondName.Name = "SecondName";
+            this.SecondName.ReadOnly = true;
+            // 
+            // FatherName
+            // 
+            this.FatherName.HeaderText = "FatherName";
+            this.FatherName.Name = "FatherName";
+            this.FatherName.ReadOnly = true;
+            // 
+            // DataOfBirthday
+            // 
+            this.DataOfBirthday.HeaderText = "DataOfBirthday";
+            this.DataOfBirthday.Name = "DataOfBirthday";
+            this.DataOfBirthday.ReadOnly = true;
+            // 
+            // DataOfRegistration
+            // 
+            this.DataOfRegistration.HeaderText = "DataOfRegistration";
+            this.DataOfRegistration.Name = "DataOfRegistration";
+            this.DataOfRegistration.ReadOnly = true;
+            // 
+            // Gender
+            // 
+            this.Gender.HeaderText = "Gender";
+            this.Gender.Name = "Gender";
+            this.Gender.ReadOnly = true;
+            // 
+            // Group
+            // 
+            this.Group.HeaderText = "Group";
+            this.Group.Name = "Group";
+            this.Group.ReadOnly = true;
+            // 
             // UpdateAndRemoveStudent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -375,16 +367,6 @@ namespace IS_Projects_of_students
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdStudentColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Login;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SecondName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FatherName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DataOfBirthday;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DataOfRegistration;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Group;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox inputGroup;
         private System.Windows.Forms.Label label8;
@@ -404,5 +386,14 @@ namespace IS_Projects_of_students
         private System.Windows.Forms.ComboBox selectedId;
         private System.Windows.Forms.Button update;
         private System.Windows.Forms.Button delete;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Login;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SecondName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FatherName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataOfBirthday;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataOfRegistration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Group;
     }
 }

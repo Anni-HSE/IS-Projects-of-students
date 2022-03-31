@@ -46,11 +46,11 @@ namespace IS_Projects_of_students
             writeEmail.Text = student.Email;
             writeDoB.Value = student.DataOfBirthday;
             writeDoR.Value = student.DataOfRegistration;
-            writeGender.SelectedItem = genders[student.Gender - 1].ToString();
+            writeGender.Text = genders[student.Gender - 1].ToString();
 
             if(student.IdGroup != 0)
             {
-                writeGroup.SelectedItem = groups[student.IdGroup - 1].ToString();
+                writeGroup.Text = groups[student.IdGroup - 1].ToString();
             }
         }
 

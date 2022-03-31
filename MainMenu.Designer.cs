@@ -35,13 +35,11 @@ namespace IS_Projects_of_students
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox3 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox4 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox6 = new System.Windows.Forms.ToolStripTextBox();
             this.пРОЕКТЫToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBox12 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox33 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox39 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox40 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox42 = new System.Windows.Forms.ToolStripTextBox();
             this.menuStripStudent = new System.Windows.Forms.MenuStrip();
             this.toolStripTextBox43 = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripTextBox44 = new System.Windows.Forms.ToolStripTextBox();
@@ -67,8 +65,7 @@ namespace IS_Projects_of_students
             this.toolStripTextBox1,
             this.toolStripTextBox2,
             this.toolStripTextBox3,
-            this.toolStripTextBox4,
-            this.toolStripTextBox6});
+            this.toolStripTextBox4});
             this.toolStripMenuItem1.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.toolStripMenuItem1.ForeColor = System.Drawing.Color.SteelBlue;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -119,24 +116,13 @@ namespace IS_Projects_of_students
             this.toolStripTextBox4.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.toolStripTextBox4.Click += new System.EventHandler(this.toolStripTextBox4_Click);
             // 
-            // toolStripTextBox6
-            // 
-            this.toolStripTextBox6.BackColor = System.Drawing.Color.Bisque;
-            this.toolStripTextBox6.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.toolStripTextBox6.ForeColor = System.Drawing.Color.SteelBlue;
-            this.toolStripTextBox6.Name = "toolStripTextBox6";
-            this.toolStripTextBox6.Size = new System.Drawing.Size(200, 26);
-            this.toolStripTextBox6.Text = "Печать";
-            this.toolStripTextBox6.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // пРОЕКТЫToolStripMenuItem
             // 
             this.пРОЕКТЫToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox12,
             this.toolStripTextBox33,
             this.toolStripTextBox39,
-            this.toolStripTextBox40,
-            this.toolStripTextBox42});
+            this.toolStripTextBox40});
             this.пРОЕКТЫToolStripMenuItem.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.пРОЕКТЫToolStripMenuItem.ForeColor = System.Drawing.Color.SteelBlue;
             this.пРОЕКТЫToolStripMenuItem.Name = "пРОЕКТЫToolStripMenuItem";
@@ -186,16 +172,6 @@ namespace IS_Projects_of_students
             this.toolStripTextBox40.Text = "Редактировать/Удалить";
             this.toolStripTextBox40.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.toolStripTextBox40.Click += new System.EventHandler(this.toolStripTextBox40_Click);
-            // 
-            // toolStripTextBox42
-            // 
-            this.toolStripTextBox42.BackColor = System.Drawing.Color.Bisque;
-            this.toolStripTextBox42.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.toolStripTextBox42.ForeColor = System.Drawing.Color.SteelBlue;
-            this.toolStripTextBox42.Name = "toolStripTextBox42";
-            this.toolStripTextBox42.Size = new System.Drawing.Size(200, 26);
-            this.toolStripTextBox42.Text = "Печать";
-            this.toolStripTextBox42.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // menuStripStudent
             // 
@@ -254,13 +230,11 @@ namespace IS_Projects_of_students
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox3;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox4;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox6;
         private System.Windows.Forms.ToolStripMenuItem пРОЕКТЫToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox12;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox33;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox39;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox40;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox42;
         private System.Windows.Forms.MenuStrip menuStripStudent;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox43;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox44;

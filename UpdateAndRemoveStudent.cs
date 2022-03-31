@@ -50,7 +50,7 @@ namespace IS_Projects_of_students
                 else
                     group = "";
 
-                dataGridView1.Rows.Add(student.IdStudent, student.Login, student.Email, student.FirstName, student.SecondName, student.FatherName, student.DataOfBirthday, student.DataOfRegistration, gender, group);
+                dataGridView1.Rows.Add(student.Login, student.Email, student.FirstName, student.SecondName, student.FatherName, student.DataOfBirthday, student.DataOfRegistration, gender, group);
             }
         }
 
@@ -180,7 +180,8 @@ namespace IS_Projects_of_students
             inputFIO.Text = student.SecondName + " " + student.FirstName + " " + student.FatherName;
             inputEmail.Text = student.Email;
             inputGender.SelectedIndex = student.Gender - 1;
-            inputGroup.SelectedIndex = student.IdGroup - 1;
+            if(student.IdGroup != 0)
+                inputGroup.SelectedIndex = student.IdGroup - 1;
             inputDoB.Value = student.DataOfBirthday;
         }
     }

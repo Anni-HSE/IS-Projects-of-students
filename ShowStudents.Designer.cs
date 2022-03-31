@@ -30,7 +30,6 @@ namespace IS_Projects_of_students
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.IdStudentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Login = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FirstName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,6 +39,7 @@ namespace IS_Projects_of_students
             this.DataOfRegistration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Gender = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,7 +49,6 @@ namespace IS_Projects_of_students
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IdStudentColumn,
             this.Login,
             this.Email,
             this.FirstName,
@@ -63,14 +62,8 @@ namespace IS_Projects_of_students
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(1004, 447);
+            this.dataGridView1.Size = new System.Drawing.Size(945, 447);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // IdStudentColumn
-            // 
-            this.IdStudentColumn.HeaderText = "Id";
-            this.IdStudentColumn.Name = "IdStudentColumn";
-            this.IdStudentColumn.ReadOnly = true;
             // 
             // Login
             // 
@@ -126,12 +119,23 @@ namespace IS_Projects_of_students
             this.Group.Name = "Group";
             this.Group.ReadOnly = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(3, 455);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(945, 48);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Импортировать в Excell";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ShowStudents
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(1008, 450);
+            this.ClientSize = new System.Drawing.Size(950, 505);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "ShowStudents";
             this.Text = "ShowStudents";
@@ -144,7 +148,6 @@ namespace IS_Projects_of_students
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdStudentColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Login;
         private System.Windows.Forms.DataGridViewTextBoxColumn Email;
         private System.Windows.Forms.DataGridViewTextBoxColumn FirstName;
@@ -154,5 +157,6 @@ namespace IS_Projects_of_students
         private System.Windows.Forms.DataGridViewTextBoxColumn DataOfRegistration;
         private System.Windows.Forms.DataGridViewTextBoxColumn Gender;
         private System.Windows.Forms.DataGridViewTextBoxColumn Group;
+        private System.Windows.Forms.Button button1;
     }
 }

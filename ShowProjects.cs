@@ -45,7 +45,7 @@ namespace IS_Projects_of_students
             dataGridView1.Rows.Clear();
             foreach (Project project in projects)
             {
-                dataGridView1.Rows.Add(project.IdProject, project.NameProject, project.DescriptionProject, projectTypes[project.TypeProject - 1].ToString(), project.Deadline, subjects[project.Subject - 1].ToString(),
+                dataGridView1.Rows.Add(project.NameProject, project.DescriptionProject, projectTypes[project.TypeProject - 1].ToString(), project.Deadline, subjects[project.Subject - 1].ToString(),
                     departments[Convert.ToInt32(departmentsId[project.Subject - 1]) - 1].ToString(), facilities[Convert.ToInt32(facilitiesId[Convert.ToInt32(departmentsId[project.Subject - 1]) - 1]) - 1].ToString());
             }
             dataGridView1.Refresh();

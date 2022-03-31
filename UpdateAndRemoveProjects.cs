@@ -25,19 +25,7 @@ namespace IS_Projects_of_students
         public UpdateAndRemoveProjects()
         {
             InitializeComponent();
-            projects = QueriesForSQL.GetProjects();
-            projectTypes = QueriesForSQL.GetProjectTypes();
-            subjects = QueriesForSQL.GetSubjects();
-            departments = QueriesForSQL.GetDepartments();
-            departmentsId = QueriesForSQL.GetDepartmentsId();
-            facilities = QueriesForSQL.GetFacilities();
-            facilitiesId = QueriesForSQL.GetFacilitiesId();
-
-            selectedSubject.Items.AddRange(QueriesForSQL.GetSubjects());
-            selectedType.Items.AddRange(QueriesForSQL.GetProjectTypes());
-            selectedId.Items.AddRange(QueriesForSQL.GetProjectIds());
-
-            dowlandDatainGridView();
+            
         }
 
         private void update_Click(object sender, EventArgs e)
@@ -96,7 +84,7 @@ namespace IS_Projects_of_students
             dataGridView1.Rows.Clear();
             foreach (Project project in projects)
             {
-                dataGridView1.Rows.Add(project.IdProject, project.NameProject, project.DescriptionProject, projectTypes[project.TypeProject - 1].ToString(), project.Deadline, subjects[project.Subject - 1].ToString(),
+                dataGridView1.Rows.Add(project.NameProject, project.DescriptionProject, projectTypes[project.TypeProject - 1].ToString(), project.Deadline, subjects[project.Subject - 1].ToString(),
                     departments[Convert.ToInt32(departmentsId[project.Subject - 1]) - 1].ToString(), facilities[Convert.ToInt32(facilitiesId[Convert.ToInt32(departmentsId[project.Subject - 1]) - 1]) - 1].ToString());
             }
             dataGridView1.Refresh();
@@ -145,6 +133,23 @@ namespace IS_Projects_of_students
             selectedSubject.SelectedIndex = project.Subject - 1;
             selectedType.SelectedIndex = project.TypeProject - 1;
             inputDeadline.Value = project.Deadline;
+        }
+
+        private void UpdateAndRemoveProjects_Load(object sender, EventArgs e)
+        {
+            projects = QueriesForSQL.GetProjects();
+            projectTypes = QueriesForSQL.GetProjectTypes();
+            subjects = QueriesForSQL.GetSubjects();
+            departments = QueriesForSQL.GetDepartments();
+            departmentsId = QueriesForSQL.GetDepartmentsId();
+            facilities = QueriesForSQL.GetFacilities();
+            facilitiesId = QueriesForSQL.GetFacilitiesId();
+
+            selectedSubject.Items.AddRange(QueriesForSQL.GetSubjects());
+            selectedType.Items.AddRange(QueriesForSQL.GetProjectTypes());
+            selectedId.Items.AddRange(QueriesForSQL.GetProjectIds());
+
+            dowlandDatainGridView();
         }
     }
 }

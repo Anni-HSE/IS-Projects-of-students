@@ -63,7 +63,7 @@ namespace IS_Projects_of_students.Scripts
                 }
                 else
                 {
-                    sql = $"INSERT INTO Teathers (Login, Password, FirstName, SecondName, FatherName, DataOfBirthday, DataOfRegistration, Email, Gender) " + values;
+                    sql = $"INSERT INTO Teachers (Login, Password, FirstName, SecondName, FatherName, DateOfBirthday, DateOfRegistration, Email, Gender) " + values;
                 }
 
                 command = connection.CreateCommand();
@@ -311,7 +311,10 @@ namespace IS_Projects_of_students.Scripts
                         student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
                         student.Email = dataReader["Email"].ToString().Trim();
                         student.Gender = Convert.ToInt32(dataReader["Gender"]);
-                        student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        if (dataReader["Group"] != DBNull.Value)
+                            student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        else
+                            student.IdGroup = 0;
                     }
                     dataReader.Close();
                 }
@@ -349,8 +352,8 @@ namespace IS_Projects_of_students.Scripts
                         student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
                         student.Email = dataReader["Email"].ToString().Trim();
                         student.Gender = Convert.ToInt32(dataReader["Gender"]);
-                        if(dataReader["Group"] != null)
-                            student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        if(dataReader["Group"] != DBNull.Value)
+                            student.IdGroup = Convert.ToInt32((int)dataReader["Group"]);
                         else
                             student.IdGroup = 0;
                         students.Add(student);
@@ -535,8 +538,8 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> genders = new List<string>();
 
-                command = new SqlCommand($"UPDATE Students SET Email = @email, Password = @password, Firstname = @firstName, SecondName = @secondName, FatherName = @fatherName, DataofBirthday = @dataOfBirthday, " +
-                    $" Gender = @gender, Group = @group WHERE IdStudent = {id}", connection);
+                command = new SqlCommand($"UPDATE Students SET Email = @email, Password = @password, Firstname = @firstName, SecondName = @secondName, FatherName = @fatherName, DataofBirthday = @dataOfBirthday," +
+                    $" Gender = @gender, [Group] = @group WHERE IdStudent = {id}", connection);
 
                 SqlParameter password = new SqlParameter("@password", System.Data.SqlDbType.NVarChar);
                 password.Value = person.Password;
@@ -554,7 +557,7 @@ namespace IS_Projects_of_students.Scripts
                 fatherName.Value = person.FatherName;
                 command.Parameters.Add(fatherName);
 
-                SqlParameter dob = new SqlParameter("@dateOfBirthday", System.Data.SqlDbType.DateTime);
+                SqlParameter dob = new SqlParameter("@dataOfBirthday", System.Data.SqlDbType.DateTime);
                 dob.Value = person.DataOfBirthday;
                 command.Parameters.Add(dob);
 
@@ -629,7 +632,10 @@ namespace IS_Projects_of_students.Scripts
                         student.DataOfRegistration = Convert.ToDateTime(dataReader["DataOfRegistration"]);
                         student.Email = dataReader["Email"].ToString().Trim();
                         student.Gender = Convert.ToInt32(dataReader["Gender"]);
-                        student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        if (dataReader["Group"] != DBNull.Value)
+                            student.IdGroup = Convert.ToInt32(dataReader["Group"]);
+                        else
+                            student.IdGroup = 0;
                     }
                     dataReader.Close();
                 }
@@ -713,7 +719,7 @@ namespace IS_Projects_of_students.Scripts
                         project.project = Convert.ToInt32(dataReader["Project"]);
                         project.file = Convert.ToInt32(dataReader["File"]);
                         project.note = Convert.ToInt32(dataReader["Note"]);
-                        project.comment = dataReader["Comment"].ToString().Trim();
+                        project.comment = dataReader["Commentary"].ToString().Trim();
                         projects.Add(project);
                     }
                     dataReader.Close();
@@ -727,34 +733,37 @@ namespace IS_Projects_of_students.Scripts
             return projects;
         }
 
-        public static List<Project> GetProjects(int id)
+        public static List<Project> GetProjects(List<StudentsProjects> studentProjects)
         {
             List<Project> projects = new List<Project>();
 
-            using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+            foreach (StudentsProjects item in studentProjects)
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
+                {
+                    connection.Open();
 
-                command = new SqlCommand($"SELECT * FROM Projects WHERE IdProject = {id}", connection);
-                try
-                {
-                    SqlDataReader dataReader = command.ExecuteReader();
-                    while (dataReader.Read())
+                    command = new SqlCommand($"SELECT * FROM Projects WHERE IdProjects = {item.project}", connection);
+                    try
                     {
-                        Project project = new Project();
-                        project.IdProject = Convert.ToInt32(dataReader["IdProject"]);
-                        project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
-                        project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
-                        project.Subject = Convert.ToInt32(dataReader["Subject"]);
-                        project.NameProject = dataReader["NameProject"].ToString().Trim();
-                        project.DescriptionProject = dataReader["DescriptionProject"].ToString().Trim();
-                        projects.Add(project);
+                        SqlDataReader dataReader = command.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Project project = new Project();
+                            project.IdProject = Convert.ToInt32(dataReader["IdProject"]);
+                            project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
+                            project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
+                            project.Subject = Convert.ToInt32(dataReader["Subject"]);
+                            project.NameProject = dataReader["NameProject"].ToString().Trim();
+                            project.DescriptionProject = dataReader["DesciptionProject"].ToString().Trim();
+                            projects.Add(project);
+                        }
+                        dataReader.Close();
                     }
-                    dataReader.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
 
@@ -768,7 +777,7 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> projectTypes = new List<string>();
 
-                command = new SqlCommand($"SELECT NameProjectType FROM ProjectTypess", connection);
+                command = new SqlCommand($"SELECT NameProjectType FROM ProjectTypes", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
@@ -800,7 +809,7 @@ namespace IS_Projects_of_students.Scripts
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        if (dataReader["Note"] != null)
+                        if (dataReader["Note"] != DBNull.Value)
                             note = Convert.ToInt32(dataReader["Note"]);
                         else
                             note = 0;
@@ -833,8 +842,8 @@ namespace IS_Projects_of_students.Scripts
                         SqlDataReader dataReader = command.ExecuteReader();
                         while (dataReader.Read())
                         {
-                            if (dataReader["DateOfDowland"] != null)
-                                dateTime = Convert.ToDateTime(dataReader["Note"]);
+                            if (dataReader["DateOfDowland"] != DBNull.Value)
+                                dateTime = Convert.ToDateTime(dataReader["DateOfDowland"]);
                             else
                                 dateTime = new DateTime();
                         }
@@ -863,7 +872,7 @@ namespace IS_Projects_of_students.Scripts
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        if (dataReader["File"] != null)
+                        if (dataReader["File"] != DBNull.Value)
                             id = Convert.ToInt32(dataReader["File"]);
                         else
                             id = 0;
@@ -886,13 +895,13 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"SELECT DescriptionProject FROM Projects WHERE IdProject = {idProject}", connection);
+                command = new SqlCommand($"SELECT DesciptionProject FROM Projects WHERE IdProjects = {idProject}", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                            description = dataReader["DescriptionProject"].ToString().Trim();
+                            description = dataReader["DesciptionProject"].ToString().Trim();
                     }
                     dataReader.Close();
                 }
@@ -912,7 +921,7 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"SELECT IdProject FROM Projects WHERE IdProject = '{nameProject}'", connection);
+                command = new SqlCommand($"SELECT IdProjects FROM Projects WHERE IdProjects = '{nameProject}'", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
@@ -938,14 +947,14 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"SELECT DescriptionProject FROM StudentProjects WHERE Project = {idProject} AND Student = {idStudent}", connection);
+                command = new SqlCommand($"SELECT Commentary FROM StudentProjects WHERE Project = {idProject} AND Student = {idStudent}", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        if (dataReader["DescriptionProject"] != null)
-                            comment = dataReader["DescriptionProject"].ToString().Trim();
+                        if (dataReader["Commentary"] != DBNull.Value)
+                            comment = dataReader["Commentary"].ToString().Trim();
                     }
                     dataReader.Close();
                 }
@@ -1007,12 +1016,12 @@ namespace IS_Projects_of_students.Scripts
                     while (dataReader.Read())
                     {
                         Project project = new Project();
-                        project.IdProject = Convert.ToInt32(dataReader["IdProject"]);
+                        project.IdProject = Convert.ToInt32(dataReader["IdProjects"]);
                         project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
                         project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
                         project.Subject = Convert.ToInt32(dataReader["Subject"]);
                         project.NameProject = dataReader["NameProject"].ToString().Trim();
-                        project.DescriptionProject = dataReader["DescriptionProject"].ToString().Trim();
+                        project.DescriptionProject = dataReader["DesciptionProject"].ToString().Trim();
                         projects.Add(project);
                     }
                     dataReader.Close();
@@ -1100,9 +1109,9 @@ namespace IS_Projects_of_students.Scripts
                 int number = -1;
 
                 string sql;
-                string values = $"values (@NameProject, @DescriptionProject, @Deadline, @Subject, @TypeProject)";
+                string values = $"values (@NameProject, @DesciptionProject, @Deadline, @Subject, @TypeProject)";
 
-                sql = $"INSERT INTO Projects (NameProject, DescriptionProject, Deadline, Subject, TypeProject) " + values;
+                sql = $"INSERT INTO Projects (NameProject, DesciptionProject, Deadline, Subject, TypeProject) " + values;
 
 
                 command = connection.CreateCommand();
@@ -1112,7 +1121,7 @@ namespace IS_Projects_of_students.Scripts
                 NameProject.Value = project.NameProject;
                 command.Parameters.Add(NameProject);
 
-                SqlParameter DescriptionProject = new SqlParameter("@DescriptionProject", System.Data.SqlDbType.NVarChar);
+                SqlParameter DescriptionProject = new SqlParameter("@DesciptionProject", System.Data.SqlDbType.NVarChar);
                 DescriptionProject.Value = project.DescriptionProject;
                 command.Parameters.Add(DescriptionProject);
 
@@ -1149,13 +1158,13 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> ids = new List<string>();
 
-                command = new SqlCommand($"SELECT IdProject FROM Projects", connection);
+                command = new SqlCommand($"SELECT IdProjects FROM Projects", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
                     while (dataReader.Read())
                     {
-                        ids.Add(dataReader["IdProject"].ToString().Trim());
+                        ids.Add(dataReader["IdProjects"].ToString().Trim());
                     }
                     dataReader.Close();
                 }
@@ -1175,14 +1184,14 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"UPDATE Projects SET NameProject = @NameProject, DescriptionProject = @DescriptionProject, Deadline = @Deadline, Subject = @Subject, TypeProject = @TypeProject" +
-                    $" WHERE IdProject = {id}", connection);
+                command = new SqlCommand($"UPDATE Projects SET NameProject = @NameProject, DesciptionProject = @DesciptionProject, Deadline = @Deadline, Subject = @Subject, TypeProject = @TypeProject" +
+                    $" WHERE IdProjects = {id}", connection);
 
                 SqlParameter NameProject = new SqlParameter("@NameProject", System.Data.SqlDbType.NVarChar);
                 NameProject.Value = project.NameProject;
                 command.Parameters.Add(NameProject);
 
-                SqlParameter DescriptionProject = new SqlParameter("@DescriptionProject", System.Data.SqlDbType.NVarChar);
+                SqlParameter DescriptionProject = new SqlParameter("@DesciptionProject", System.Data.SqlDbType.NVarChar);
                 DescriptionProject.Value = project.DescriptionProject;
                 command.Parameters.Add(DescriptionProject);
 
@@ -1219,7 +1228,7 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"DELETE FROM Projects WHERE IdProject = {id}", connection);
+                command = new SqlCommand($"DELETE FROM Projects WHERE IdProjects = {id}", connection);
 
                 try
                 {
@@ -1240,7 +1249,7 @@ namespace IS_Projects_of_students.Scripts
             using (SqlConnection connection = new SqlConnection(QueriesForSQL.ConnecttionString))
             {
                 connection.Open();
-                command = new SqlCommand($"SELECT * FROM Projects WHERE idProject = {id}", connection);
+                command = new SqlCommand($"SELECT * FROM Projects WHERE IdProjects = {id}", connection);
 
                 try
                 {
@@ -1249,7 +1258,7 @@ namespace IS_Projects_of_students.Scripts
                     {
                         project.IdProject = id;
                         project.NameProject = dataReader["NameProject"].ToString().Trim();
-                        project.DescriptionProject = dataReader["DescriptionProject"].ToString().Trim();
+                        project.DescriptionProject = dataReader["DesciptionProject"].ToString().Trim();
                         project.Deadline = Convert.ToDateTime(dataReader["Deadline"]);
                         project.Subject = Convert.ToInt32(dataReader["Subject"]);
                         project.TypeProject = Convert.ToInt32(dataReader["TypeProject"]);
@@ -1272,7 +1281,7 @@ namespace IS_Projects_of_students.Scripts
                 connection.Open();
                 List<string> ids = new List<string>();
 
-                command = new SqlCommand($"SELECT Project FROM StudentProjects WHERE Stident = {id}", connection);
+                command = new SqlCommand($"SELECT Project FROM StudentProjects WHERE Student = {id}", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();
@@ -1298,9 +1307,9 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"UPDATE StudentProjects SET Grade = @Grade WHERE Project = {idProject} AND Student = {idStudent}", connection);
+                command = new SqlCommand($"UPDATE StudentProjects SET Grade = @Note WHERE Project = {idProject} AND Student = {idStudent}", connection);
 
-                SqlParameter Grade = new SqlParameter("@Grade", System.Data.SqlDbType.NVarChar);
+                SqlParameter Grade = new SqlParameter("@Note", System.Data.SqlDbType.NVarChar);
                 Grade.Value = grade;
                 command.Parameters.Add(Grade);
 

@@ -30,14 +30,6 @@ namespace IS_Projects_of_students
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.IdProjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameProject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DescitptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ProjectTypeColemn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DeadlineColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.subjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DepartmentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FacilityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.delete = new System.Windows.Forms.Button();
             this.update = new System.Windows.Forms.Button();
             this.selectedId = new System.Windows.Forms.ComboBox();
@@ -53,6 +45,13 @@ namespace IS_Projects_of_students
             this.label4 = new System.Windows.Forms.Label();
             this.inputNameProject = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.nameProject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DescitptionColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ProjectTypeColemn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DeadlineColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.subjectColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DepartmentColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FacilityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,7 +61,6 @@ namespace IS_Projects_of_students
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.IdProjectColumn,
             this.nameProject,
             this.DescitptionColumn,
             this.ProjectTypeColemn,
@@ -74,56 +72,8 @@ namespace IS_Projects_of_students
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(844, 447);
+            this.dataGridView1.Size = new System.Drawing.Size(743, 447);
             this.dataGridView1.TabIndex = 2;
-            // 
-            // IdProjectColumn
-            // 
-            this.IdProjectColumn.HeaderText = "Id";
-            this.IdProjectColumn.Name = "IdProjectColumn";
-            this.IdProjectColumn.ReadOnly = true;
-            // 
-            // nameProject
-            // 
-            this.nameProject.HeaderText = "Name Project";
-            this.nameProject.Name = "nameProject";
-            this.nameProject.ReadOnly = true;
-            // 
-            // DescitptionColumn
-            // 
-            this.DescitptionColumn.HeaderText = "Description";
-            this.DescitptionColumn.Name = "DescitptionColumn";
-            this.DescitptionColumn.ReadOnly = true;
-            // 
-            // ProjectTypeColemn
-            // 
-            this.ProjectTypeColemn.HeaderText = "ProjectType";
-            this.ProjectTypeColemn.Name = "ProjectTypeColemn";
-            this.ProjectTypeColemn.ReadOnly = true;
-            // 
-            // DeadlineColumn
-            // 
-            this.DeadlineColumn.HeaderText = "Deadline";
-            this.DeadlineColumn.Name = "DeadlineColumn";
-            this.DeadlineColumn.ReadOnly = true;
-            // 
-            // subjectColumn
-            // 
-            this.subjectColumn.HeaderText = "Subject";
-            this.subjectColumn.Name = "subjectColumn";
-            this.subjectColumn.ReadOnly = true;
-            // 
-            // DepartmentColumn
-            // 
-            this.DepartmentColumn.HeaderText = "Department";
-            this.DepartmentColumn.Name = "DepartmentColumn";
-            this.DepartmentColumn.ReadOnly = true;
-            // 
-            // FacilityColumn
-            // 
-            this.FacilityColumn.HeaderText = "Facility";
-            this.FacilityColumn.Name = "FacilityColumn";
-            this.FacilityColumn.ReadOnly = true;
             // 
             // delete
             // 
@@ -279,12 +229,54 @@ namespace IS_Projects_of_students
             this.label1.TabIndex = 60;
             this.label1.Text = "Название проекта";
             // 
+            // nameProject
+            // 
+            this.nameProject.HeaderText = "Name Project";
+            this.nameProject.Name = "nameProject";
+            this.nameProject.ReadOnly = true;
+            // 
+            // DescitptionColumn
+            // 
+            this.DescitptionColumn.HeaderText = "Description";
+            this.DescitptionColumn.Name = "DescitptionColumn";
+            this.DescitptionColumn.ReadOnly = true;
+            // 
+            // ProjectTypeColemn
+            // 
+            this.ProjectTypeColemn.HeaderText = "ProjectType";
+            this.ProjectTypeColemn.Name = "ProjectTypeColemn";
+            this.ProjectTypeColemn.ReadOnly = true;
+            // 
+            // DeadlineColumn
+            // 
+            this.DeadlineColumn.HeaderText = "Deadline";
+            this.DeadlineColumn.Name = "DeadlineColumn";
+            this.DeadlineColumn.ReadOnly = true;
+            // 
+            // subjectColumn
+            // 
+            this.subjectColumn.HeaderText = "Subject";
+            this.subjectColumn.Name = "subjectColumn";
+            this.subjectColumn.ReadOnly = true;
+            // 
+            // DepartmentColumn
+            // 
+            this.DepartmentColumn.HeaderText = "Department";
+            this.DepartmentColumn.Name = "DepartmentColumn";
+            this.DepartmentColumn.ReadOnly = true;
+            // 
+            // FacilityColumn
+            // 
+            this.FacilityColumn.HeaderText = "Facility";
+            this.FacilityColumn.Name = "FacilityColumn";
+            this.FacilityColumn.ReadOnly = true;
+            // 
             // UpdateAndRemoveProjects
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(1136, 479);
+            this.ClientSize = new System.Drawing.Size(1035, 479);
             this.Controls.Add(this.inputDeadline);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.selectedSubject);
@@ -303,6 +295,7 @@ namespace IS_Projects_of_students
             this.Controls.Add(this.dataGridView1);
             this.Name = "UpdateAndRemoveProjects";
             this.Text = "UpdateAndRemoveProjects";
+            this.Load += new System.EventHandler(this.UpdateAndRemoveProjects_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -312,14 +305,6 @@ namespace IS_Projects_of_students
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IdProjectColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameProject;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DescitptionColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectTypeColemn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DeadlineColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn subjectColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DepartmentColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn FacilityColumn;
         private System.Windows.Forms.Button delete;
         private System.Windows.Forms.Button update;
         private System.Windows.Forms.ComboBox selectedId;
@@ -335,5 +320,12 @@ namespace IS_Projects_of_students
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox inputNameProject;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameProject;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DescitptionColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProjectTypeColemn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DeadlineColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn subjectColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DepartmentColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn FacilityColumn;
     }
 }

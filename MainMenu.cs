@@ -80,7 +80,7 @@ namespace IS_Projects_of_students
         }
         private void toolStripTextBox12_Click(object sender, EventArgs e)
         {
-            AddStudent form = new AddStudent();
+            AddProject form = new AddProject();
             form.Show();
         }
 

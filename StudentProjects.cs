@@ -128,7 +128,7 @@ namespace IS_Projects_of_students
             subjects = QueriesForSQL.GetSubjects();
             idStudent = QueriesForSQL.GetStudentId(login);
             projectsStudents = QueriesForSQL.GetStudentsProjects(idStudent);
-            projects = QueriesForSQL.GetProjects(projectsStudents[0].project);
+            projects = QueriesForSQL.GetProjects(projectsStudents);
             projectTypes = QueriesForSQL.GetProjectTypes();
         }
     }

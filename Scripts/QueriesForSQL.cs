@@ -1390,7 +1390,7 @@ namespace IS_Projects_of_students.Scripts
             {
                 connection.Open();
 
-                command = new SqlCommand($"SELECT IdStudent FROM Students WHERE SecondName = '{fioname[0]} AND FirstName = {fioname[1]} AND FAtherName = {fioname[2]}'", connection);
+                command = new SqlCommand($"SELECT IdStudent FROM Students WHERE SecondName = '{fioname[0]}' AND FirstName = '{fioname[1]}' AND FAtherName = '{fioname[2]}'", connection);
                 try
                 {
                     SqlDataReader dataReader = command.ExecuteReader();

@@ -75,7 +75,7 @@ namespace IS_Projects_of_students
                 dataGridView1.Refresh();
 
                 selectedId.Items.Clear();
-                selectedId.Items.AddRange(QueriesForSQL.GetStudentIds());
+                selectedId.Items.AddRange(QueriesForSQL.GetProjectIds());
             }
         }
 

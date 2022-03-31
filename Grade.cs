@@ -44,7 +44,7 @@ namespace IS_Projects_of_students
 
         private void selectedIdProject_SelectedIndexChanged(object sender, EventArgs e)
         {
-            idProject = QueriesForSQL.GetProjectId(selectedIdStudent.SelectedItem.ToString());
+            idProject = QueriesForSQL.GetProjectId(selectedIdProject.SelectedItem.ToString());
             if (QueriesForSQL.CheckStudentProject(idStudent, idProject) == 0)
             {
                 addProjectForStudent.Enabled = true;
